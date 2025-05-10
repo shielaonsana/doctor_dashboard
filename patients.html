@@ -456,18 +456,24 @@
 
         @media (max-width: 576px) {
             .top-bar {
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 gap: 10px;
                 padding: 12px 15px;
             }
 
             .search-container {
                 max-width: 100%;
+                order: 2;
+            }
+
+            .menu-toggle {
                 order: 1;
+                margin-right: 10px;
             }
 
             .notification-container {
-                margin-left: auto;
+                order: 3;
+                margin-left: 0;
             }
 
             .content {
@@ -479,7 +485,37 @@
             }
 
             .patient-card {
-                padding: 12px;
+                padding: 15px;
+            }
+
+            .patient-info {
+                flex-direction: row;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+
+            .patient-avatar {
+                width: 40px;
+                height: 40px;
+                margin-right: 12px;
+                margin-bottom: 0;
+            }
+
+            .patient-details {
+                margin-left: 52px;
+                margin-top: 0;
+            }
+
+            .action-buttons {
+                margin-left: 52px;
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .btn {
+                width: auto;
+                padding: 8px 12px;
+                font-size: 13px;
             }
 
             .patient-age,
@@ -496,6 +532,10 @@
             .user-dropdown img {
                 width: 32px;
                 height: 32px;
+            }
+
+            .patient-name {
+                font-size: 15px;
             }
         }
     </style>

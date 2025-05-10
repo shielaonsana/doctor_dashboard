@@ -493,7 +493,7 @@
             }
 
             .search-container {
-                max-width: 180px;
+                max-width: 100%;
             }
 
             .notification-badge {
@@ -503,18 +503,62 @@
             }
 
             .patient-avatar {
-                width: 35px;
-                height: 35px;
+                width: 40px;
+                /* Restore original size */
+                height: 40px;
+                margin-right: 12px;
+                /* Maintain spacing */
             }
 
             .status-badge {
-                position: static;
+                position: absolute;
+                /* Keep badge in original position */
+                top: 15px;
+                right: 15px;
+                margin-bottom: 0;
+                /* Remove previous bottom margin */
+            }
+
+            .patient-info {
+                flex-direction: row;
+                /* Keep inline layout */
+                align-items: center;
                 margin-bottom: 10px;
             }
 
-            .time-slot i,
-            .appointment-type i {
-                margin-right: 5px;
+            .appointment-details {
+                margin-left: 52px;
+                /* Restore original indentation */
+                margin-top: 0;
+            }
+
+            .action-buttons {
+                margin-left: 52px;
+                /* Restore original indentation */
+                flex-direction: row;
+                /* Keep buttons inline */
+                gap: 8px;
+            }
+
+            .btn {
+                width: auto;
+                flex: 1;
+                /* Maintain equal button widths */
+                padding: 8px;
+                font-size: 13px;
+                /* Slightly smaller text */
+            }
+
+            .patient-name {
+                font-size: 15px;
+                /* Slightly reduced size */
+            }
+
+            .patient-details,
+            .time-slot,
+            .appointment-type {
+                font-size: 13px;
+                /* Consistent text size */
             }
 
             .welcome-text h1 {
