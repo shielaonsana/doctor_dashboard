@@ -373,114 +373,415 @@
             margin-right: 6px;
         }
 
-        .details-modal {
+        /* Enhanced Modal Styles */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-content {
-            background-color: white;
-            margin: 10px auto;
-            padding: 20px;
-            width: 80%;
-            max-width: 700px;
-            border-radius: 10px;
+            background: #ffffff;
+            margin: 2% auto;
+            padding: 32px;
+            width: 85%;
+            max-width: 900px;
+            border-radius: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             position: relative;
         }
 
-        .close-btn {
+        .close {
             position: absolute;
-            right: 20px;
-            top: 10px;
-            font-size: 28px;
+            top: 24px;
+            right: 24px;
+            font-size: 24px;
+            color: #64748b;
             cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(241, 245, 249, 0.8);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .modal-body {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            /* Changed from 1fr 1fr to three columns */
-            gap: 20px;
-            padding: 20px 0;
+        .close:hover {
+            color: #ef4444;
+            background: rgba(241, 245, 249, 1);
+            transform: rotate(90deg);
+        }
+
+        /* Premium Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            animation: modalEntrance 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+
+        }
+
+
+
+
+        @keyframes modalEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.96) translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+            margin: 2% auto;
+            padding: 40px;
+            width: 85%;
+            max-width: 880px;
+            border-radius: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            font-family: 'Outfit', sans-serif;
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE/Edge */
+            overflow-y: auto;
+            /* Keep this to maintain scrolling */
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
+        }
+
+        .modal-content::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari/Opera */
+        }
+
+        .close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 22px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(241, 245, 249, 0.8);
+            backdrop-filter: blur(4px);
+        }
+
+        .close:hover {
+            color: #ef4444;
+            transform: rotate(90deg);
+            background: rgba(241, 245, 249, 1);
         }
 
         .modal-section {
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 8px;
-            min-height: 200px;
-            /* Added for better spacing */
-        }
-
-        .modal-section h3 {
-            margin-bottom: 10px;
-            color: #3498db;
-        }
-
-        .modal-section h3 i {
-            margin-right: 8px;
+            margin: 0px 0;
+            padding: 0;
         }
 
         .modal-section ul {
-            padding-left: 20px;
-            margin-top: 8px;
+            list-style-type: none;
+            padding-left: 0;
         }
 
         .modal-section li {
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .modal-section p {
+            position: relative;
+            padding-left: 1.2rem;
             margin: 8px 0;
-            font-size: 14px;
-            color: #444;
         }
 
-        .modal-header {
-            padding: 15px;
-            border-bottom: 1px solid #e0e7f1;
+        .modal-section h2 {
+            color: #0f172a;
+            font-weight: 700;
+            margin-top: 28px;
+            margin-bottom: 28px;
+            font-size: 1.6rem;
+            position: relative;
+            padding-left: 24px;
+            letter-spacing: -0.5px;
         }
 
-        .modal-patient-info {
+        .modal-section h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 70%;
+            width: 4px;
+            background: linear-gradient(45deg, #3498db, #60a5fa);
+            border-radius: 4px;
+        }
+
+        .demographics-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 36px;
+            align-items: start;
+        }
+
+        .profile-photo {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(52, 152, 219, 0.15);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+        }
+
+        .demographics-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .demographics-info p {
+            margin: 0;
+            padding: 16px;
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .demographics-info p:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(52, 152, 219, 0.1);
+        }
+
+        .demographics-info strong {
+            color: #1e293b;
+            font-weight: 600;
+            min-width: 90px;
+            display: inline-block;
+            font-size: 0.95em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+
+        }
+
+        .info-grid div {
+            padding: 24px;
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+        }
+
+        .info-grid div:hover {
+            background: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(52, 152, 219, 0.08);
+        }
+
+        .info-grid h3 {
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
+            font-weight: 600;
         }
 
-        .modal-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #3498db;
+        .info-grid h3 i {
+            color: #3498db;
+            font-size: 1.2em;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            padding: 6px;
         }
 
-        .modal-avatar img {
-            width: 100%;
+        .columns {
+            margin-top: 28px;
+            margin-bottom: 28px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 36px;
+            background: rgba(248, 250, 252, 0.6);
+            padding: 32px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+        }
+
+        .columns:hover {
+            background: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(52, 152, 219, 0.08);
+        }
+
+
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 0;
             height: 100%;
-            object-fit: cover;
+            width: 2px;
+            background: rgba(52, 152, 219, 0.1);
         }
 
-        .modal-patient-text h2 {
-            margin-bottom: 5px;
-            color: #1f2937;
+        .timeline-item {
+            position: relative;
+            margin: 28px 0;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            border-left: 4px solid #3498db;
         }
 
-        .modal-patient-text p {
-            color: #666;
-            font-size: 14px;
+        .timeline-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 32px rgba(52, 152, 219, 0.1);
         }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 24px;
+            width: 12px;
+            height: 12px;
+            background: #3498db;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #3498db;
+        }
+
+        .timeline-date {
+            color: #3498db;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .modal-actions .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            border: none;
+        }
+
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 28px;
+                width: 95%;
+            }
+
+            .demographics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demographics-info {
+                grid-template-columns: 1fr;
+            }
+
+            .columns {
+                 margin-top: 28px;
+                grid-template-columns: 1fr;
+                padding: 24px;
+            }
+
+            .timeline-item {
+                padding: 20px;
+                margin: 24px 0;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
 
         /* Responsive Styles */
         @media (max-width: 1200px) {
@@ -833,29 +1134,106 @@
             </div>
         </div>
 
-        <!-- Add this at the end of your content div -->
-        <div class="details-modal" id="details-modal">
+        
+        <div id="patientModal" class="modal">
             <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <div class="modal-header">
+                <span class="close">&times;</span>
 
-
-                    <div class="modal-patient-info">
-                        <div class="modal-avatar">
-                            <img id="modal-patient-img" src="images/doctor-1.png" alt="Patient Avatar">
+                <!-- Core Demographics -->
+                <div class="modal-section">
+                    <h2>Patient Profile</h2>
+                    <div class="demographics-grid">
+                        <div class="profile-photo">
+                            <img src="images/doctor-1.png" alt="Patient Photo">
                         </div>
-                        <div class="modal-patient-text">
-                            <h2 id="modal-patient-name">Jennifer Adams</h2>
-                            <p id="modal-patient-age"></p>
+                        <div class="demographics-info">
+                            <p><strong>Name:</strong> Jennifer Adams</p>
+                            <p><strong>Date of Birth:</strong> 1985-04-15 (39 years)</p>
+                            <p><strong>Gender:</strong> Female</p>
+                            <p><strong>Phone:</strong> (555) 123-4567</p>
+                            <p><strong>Email:</strong> j.adams@email.com</p>
+                            <p><strong>Address:</strong> 123 Main St, Cityville, ST 12345</p>
                         </div>
                     </div>
+                </div>
 
+                <!-- Medical Information -->
+                <div class="modal-section">
+                    <h2>Medical Information</h2>
+                    <div class="info-grid">
+                        <div>
+                            <h3>Allergies</h3>
+                            <ul>
+                                <li>Penicillin (Severe)</li>
+                                <li>Shellfish</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Current Medications</h3>
+                            <ul>
+                                <li>Lisinopril 10mg - Daily</li>
+                                <li>Metformin 500mg - Twice daily</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Medical History</h3>
+                            <ul>
+                                <li>Type 2 Diabetes (2018-present)</li>
+                                <li>Appendectomy (2002)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Vital Signs</h3>
+                            <ul>
+                                <li>BP: 120/80 mmHg</li>
+                                <li>BMI: 24.1</li>
+                                <li>Heart Rate: 72 bpm</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <!-- Content will be dynamically inserted here -->
+
+                <!-- Insurance & Emergency Contacts -->
+                <div class="modal-section columns">
+                    <div>
+                        <h2>Insurance Information</h2>
+                        <p><strong>Provider:</strong> HealthCare Plus</p>
+                        <p><strong>Policy #:</strong> HC-123456789</p>
+                        <p><strong>Group #:</strong> GRP-9876</p>
+                    </div>
+                    <div>
+                        <h2>Emergency Contacts</h2>
+                        <p><strong>Name:</strong> John Adams (Spouse)</p>
+                        <p><strong>Phone:</strong> (555) 765-4321</p>
+                        <p><strong>Email:</strong> j.adams@email.com</p>
+                    </div>
                 </div>
+
+                <!-- Visit History -->
+                <div class="modal-section">
+                    <h2>Visit History & Appointments</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025-04-03</div>
+                            <div class="timeline-content">
+                                <h4>Annual Check-up</h4>
+                                <p>Diagnosis: Stable condition</p>
+                                <p>Treatment: Maintain current regimen</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024-10-15</div>
+                            <div class="timeline-content">
+                                <h4>Follow-up Visit</h4>
+                                <p>Adjusted medication dosage</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
         <script>
             // Toggle sidebar functionality
             document.getElementById('menu-toggle').addEventListener('click', function () {
@@ -924,81 +1302,27 @@
             // Add event listener
             searchInput.addEventListener('input', searchAppointments);
 
-            // Update your script section
-            document.querySelectorAll('.btn-primary').forEach(button => {
-                button.addEventListener('click', (e) => {
+            // Modal Handling
+            const modal = document.getElementById('patientModal');
+            const closeBtn = document.querySelector('.close');
+            const viewDetailsBtns = document.querySelectorAll('.btn-primary');
+
+            viewDetailsBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const modal = document.getElementById('details-modal');
-                    const modalBody = modal.querySelector('.modal-body');
-
-                    // Sample data - replace with actual patient data
-                    modalBody.innerHTML = `
-      <div class="modal-section">
-        <h3><i class="fas fa-info-circle"></i> Basic Info</h3>
-        <p>Full Name: Jennifer Adams</p>
-        <p>Date of Birth: 1986-05-15 (39 years)</p>
-        <p>Gender: Female</p>
-        <p>Blood Type: O+</p>
-      </div>
-      
-      <div class="modal-section">
-        <h3><i class="fas fa-history"></i> Medical History</h3>
-        <p>Allergies: Penicillin, Pollen</p>
-        <p>Chronic Conditions: Hypertension</p>
-        <p>Previous Surgeries: Appendectomy (2010)</p>
-      </div>
-      
-      <div class="modal-section">
-        <h3><i class="fas fa-prescription-bottle"></i> Medications</h3>
-        <p>Current: Lisinopril 10mg daily</p>
-        <p>Recent: Amoxicillin (completed 2025-03-20)</p>
-      </div>
-      
-      <div class="modal-section">
-        <h3><i class="fas fa-heartbeat"></i> Vital Signs</h3>
-        <p>Last Recorded (2025-04-03):</p>
-        <p>BP: 120/80 mmHg | HR: 72 bpm</p>
-        <p>Weight: 68 kg | Height: 165 cm</p>
-      </div>
-      
-      <div class="modal-section">
-        <h3><i class="fas fa-calendar-alt"></i> Appointments</h3>
-        <p>Next Appointment: 2025-05-05 (Follow-up)</p>
-        <p>Last 3 Visits:
-          <ul>
-            <li>2025-04-03 - Routine Checkup</li>
-            <li>2025-02-15 - Blood Pressure Follow-up</li>
-            <li>2024-12-10 - Annual Physical</li>
-          </ul>
-        </p>
-      </div>
-      
-      <div class="modal-section">
-        <h3><i class="fas fa-stethoscope"></i> Treatment Plan</h3>
-        <p>Current Plan:</p>
-        <ul>
-          <li>Monthly BP checks</li>
-          <li>Low-sodium diet</li>
-          <li>30-min daily exercise</li>
-        </ul>
-      </div>
-    `;
-
                     modal.style.display = 'block';
                 });
             });
 
-            // Close modal functionality
-            document.querySelector('.close-btn').addEventListener('click', () => {
-                document.getElementById('details-modal').style.display = 'none';
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
             });
 
-            window.onclick = (event) => {
-                const modal = document.getElementById('details-modal');
-                if (event.target === modal) {
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
                     modal.style.display = 'none';
                 }
-            };
+            });
 
         </script>
 </body>

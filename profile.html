@@ -872,13 +872,13 @@ Fellowship in Cardiovascular Disease, Stanford University Medical Center, 2008-2
     </div>
 
     <script>
-        // Toggle sidebar functionality
+        // Sidebar Toggle
         document.getElementById('menu-toggle').addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('active');
             document.querySelector('.main-content').classList.toggle('expanded');
         });
 
-        // Close sidebar when clicking outside on small screens
+        // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function (event) {
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menu-toggle');
@@ -892,7 +892,7 @@ Fellowship in Cardiovascular Disease, Stanford University Medical Center, 2008-2
             }
         });
 
-        // Adjust sidebar on window resize
+        // Responsive Sidebar Handling
         window.addEventListener('resize', function () {
             const sidebar = document.getElementById('sidebar');
             if (window.innerWidth > 768 && sidebar.classList.contains('active')) {
@@ -901,87 +901,145 @@ Fellowship in Cardiovascular Disease, Stanford University Medical Center, 2008-2
             }
         });
 
-        // JavaScript for tab switching
-        document.addEventListener('DOMContentLoaded', function () {
-            const navItems = document.querySelectorAll('.settings-nav-item');
-
-            navItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    // Remove active class from all nav items
-                    navItems.forEach(navItem => {
-                        navItem.classList.remove('active');
-                    });
-
-                    // Add active class to clicked nav item
-                    this.classList.add('active');
-
-                    // Hide all content sections
-                    const sections = document.querySelectorAll('.settings-section');
-                    sections.forEach(section => {
-                        section.classList.remove('active');
-                    });
-
-                    // Show the corresponding content section
-                    const target = this.getAttribute('data-target');
-                    document.getElementById(target).classList.add('active');
+        // Tab Switching Functionality
+        document.querySelectorAll('.settings-nav-item').forEach(item => {
+            item.addEventListener('click', function () {
+                // Switch active tabs
+                document.querySelectorAll('.settings-nav-item, .settings-section').forEach(el => {
+                    el.classList.remove('active');
                 });
-            });
-
-            // Specialty tags functionality
-            const subspecialtiesInput = document.getElementById('subspecialties');
-            const languageInput = document.getElementById('language');
-
-            if (subspecialtiesInput) {
-                subspecialtiesInput.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter' && this.value.trim() !== '') {
-                        e.preventDefault();
-
-                        const tagsContainer = this.nextElementSibling;
-                        const newTag = document.createElement('div');
-                        newTag.className = 'specialty-tag';
-                        newTag.innerHTML = this.value.trim() + ' <i class="fas fa-times"></i>';
-
-                        tagsContainer.appendChild(newTag);
-                        this.value = '';
-
-                        // Add click event to remove button
-                        const removeBtn = newTag.querySelector('i');
-                        removeBtn.addEventListener('click', function () {
-                            newTag.remove();
-                        });
-                    }
-                });
-            }
-
-            if (languageInput) {
-                languageInput.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter' && this.value.trim() !== '') {
-                        e.preventDefault();
-
-                        const tagsContainer = this.nextElementSibling;
-                        const newTag = document.createElement('div');
-                        newTag.className = 'specialty-tag';
-                        newTag.innerHTML = this.value.trim() + ' <i class="fas fa-times"></i>';
-
-                        tagsContainer.appendChild(newTag);
-                        this.value = '';
-
-                        // Add click event to remove button
-                        const removeBtn = newTag.querySelector('i');
-                        removeBtn.addEventListener('click', function () {
-                            newTag.remove();
-                        });
-                    }
-                });
-            }
-
-            // Add event listeners to remove existing tags
-            document.querySelectorAll('.specialty-tag i').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    this.parentElement.remove();
-                });
+                this.classList.add('active');
+                document.getElementById(this.dataset.target).classList.add('active');
             });
         });
+
+        // Avatar Upload Functionality
+        const avatarInput = document.getElementById('avatar-input');
+        const currentAvatar = document.querySelector('.current-avatar');
+        const removeAvatarBtn = document.querySelector('.avatar-actions button');
+
+        avatarInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    currentAvatar.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeAvatarBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            currentAvatar.src = 'images/doctor-1.png'; // Default avatar
+            avatarInput.value = ''; // Clear file input
+        });
+
+        // Specialty Tags Functionality
+        const subspecialtiesInput = document.getElementById('subspecialties');
+        const tagsContainer = document.querySelector('.specialty-tags');
+
+        function createTag(text) {
+            const tag = document.createElement('div');
+            tag.className = 'specialty-tag';
+            tag.innerHTML = `${text} <i class="fas fa-times"></i>`;
+            tag.querySelector('i').addEventListener('click', () => tag.remove());
+            return tag;
+        }
+
+        subspecialtiesInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                e.preventDefault();
+                tagsContainer.appendChild(createTag(this.value.trim()));
+                this.value = '';
+            }
+        });
+
+        // Initialize existing tags
+        document.querySelectorAll('.specialty-tag i').forEach(icon => {
+            icon.addEventListener('click', function () {
+                this.parentElement.remove();
+            });
+        });
+
+        // Form Handling and Validation
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', async function (e) {
+                e.preventDefault();
+                const form = this.closest('.settings-section');
+
+                // Simple Validation Example
+                if (form.id === 'personal-info') {
+                    const email = form.querySelector('#email');
+                    if (!validateEmail(email.value)) {
+                        alert('Please enter a valid email address');
+                        return;
+                    }
+                }
+
+                // Collect form data
+                const formData = new FormData();
+                form.querySelectorAll('input, select, textarea').forEach(field => {
+                    if (field.type !== 'file') {
+                        formData.append(field.name || field.id, field.value);
+                    }
+                });
+
+                // Collect specialty tags
+                const specialties = Array.from(form.querySelectorAll('.specialty-tag'))
+                    .map(tag => tag.textContent.trim().replace('×', ''));
+                formData.append('specialties', specialties.join(','));
+
+                // Simulate API call
+                try {
+                    // Replace with actual fetch() call
+                    console.log([...formData.entries()]);
+                    alert('Settings saved successfully!');
+                } catch (error) {
+                    alert('Error saving settings');
+                }
+            });
+        });
+
+        // Cancel Button Functionality
+        document.querySelectorAll('.btn-outline').forEach(button => {
+            if (button.textContent.includes('Cancel')) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Reset form fields
+                    this.closest('.settings-section').querySelectorAll('input, select, textarea').forEach(field => {
+                        field.value = field.defaultValue;
+                    });
+                    // Reset avatar
+                    currentAvatar.src = 'images/doctor-1.png';
+                    avatarInput.value = '';
+                    // Reset tags
+                    tagsContainer.innerHTML = `
+                    <div class="specialty-tag">
+                        Interventional Cardiology <i class="fas fa-times"></i>
+                    </div>
+                    <div class="specialty-tag">
+                        Electrophysiology <i class="fas fa-times"></i>
+                    </div>
+                `;
+                    // Reinitialize tag remove buttons
+                    document.querySelectorAll('.specialty-tag i').forEach(icon => {
+                        icon.addEventListener('click', function () {
+                            this.parentElement.remove();
+                        });
+                    });
+                });
+            }
+        });
+
+        // Validation Helpers
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePhone(phone) {
+            return /^\(\d{3}\) \d{3}-\d{4}$/.test(phone);
+        }
     </script>
 </body>
 
