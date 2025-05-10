@@ -313,6 +313,12 @@
             color: #2563eb;
         }
 
+        .cancelled {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+
         .patient-info {
             display: flex;
             align-items: center;
@@ -408,6 +414,65 @@
         .btn i {
             margin-right: 6px;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #e0e7f1;
+            border-radius: 6px;
+            resize: vertical;
+        }
+
+        .time-slot-selector {
+            margin: 20px 0;
+        }
+
+        .time-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e7f1;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
 
         /* Responsive Styles */
         @media (max-width: 1200px) {
@@ -565,7 +630,6 @@
                 font-size: 20px;
             }
         }
-
     </style>
 </head>
 
@@ -643,7 +707,7 @@
                 <!-- Welcome Section -->
                 <div class="welcome-section">
                     <div class="welcome-text">
-                        <h1>Appointments</h1>
+                        <h1>Today's Appointments</h1>
                     </div>
                 </div>
                 <div class="appointments-container">
@@ -765,7 +829,7 @@
                         <div class="appointment-details">
                             <div class="time-slot">
                                 <i class="far fa-clock"></i>
-                                15:00 - 15:30 PM
+                                7:00 -8:30 PM
                             </div>
                             <div class="appointment-type">
                                 <i class="fas fa-stethoscope"></i>
@@ -773,11 +837,11 @@
                             </div>
                         </div>
                         <div class="action-buttons">
-                            <a href="#" class="btn btn-outline">
+                            <a href="#" class="btn btn-outline cancel-btn">
                                 <i class="fas fa-times"></i>
                                 Cancel
                             </a>
-                            <a href="#" class="btn btn-primary">
+                            <a href="#" class="btn btn-primary checkin-btn">
                                 <i class="fas fa-check"></i>
                                 Check In
                             </a>
@@ -807,11 +871,11 @@
                             </div>
                         </div>
                         <div class="action-buttons">
-                            <a href="#" class="btn btn-outline">
+                            <a href="#" class="btn btn-outline cancel-btn">
                                 <i class="fas fa-times"></i>
                                 Cancel
                             </a>
-                            <a href="#" class="btn btn-primary">
+                            <a href="#" class="btn btn-primary checkin-btn">
                                 <i class="fas fa-check"></i>
                                 Check In
                             </a>
@@ -819,6 +883,41 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+
+    <div id="notesModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Medical Notes</h3>
+            <div class="notes-content" id="notesContent"></div>
+            <textarea id="editNotes" class="notes-textarea" placeholder="Add notes..."></textarea>
+            <button class="btn btn-primary" id="saveNotes">Save Changes</button>
+        </div>
+    </div>
+
+    <div id="rescheduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Reschedule Appointment</h3>
+            <div class="time-slot-selector">
+                <label>Select New Time Slot:</label>
+                <select id="newTimeSlot" class="time-select">
+                    <option value="08:00 - 08:30 AM">08:00 - 08:30 AM</option>
+                    <option value="09:00 - 09:30 AM">09:00 - 09:30 AM</option>
+                    <option value="10:00 - 10:30 AM">10:00 - 10:30 AM</option>
+                    <option value="11:00 - 11:30 AM">11:00 - 11:30 AM</option>
+                    <option value="13:00 - 13:30 PM">13:00 - 13:30 PM</option>
+                    <option value="14:00 - 14:30 PM">14:00 - 14:30 PM</option>
+                    <option value="15:00 - 15:30 PM">15:00 - 15:30 PM</option>
+                    <option value="16:00 - 16:30 PM">16:00 - 16:30 PM</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="cancelReschedule">Cancel</button>
+                <button class="btn btn-primary" id="confirmReschedule">Confirm</button>
             </div>
         </div>
     </div>
@@ -890,6 +989,117 @@
 
         // Add event listener
         searchInput.addEventListener('input', searchAppointments);
+
+        // View Notes Logic
+        document.querySelectorAll('.btn-outline').forEach(button => {
+            if (button.textContent.includes('View Notes')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const modal = document.getElementById('notesModal');
+                    const notesContent = e.target.closest('.appointment-card').dataset.notes || '';
+                    document.getElementById('editNotes').value = notesContent;
+                    modal.style.display = 'block';
+                });
+            }
+        });
+
+        // Close modal logic
+        document.querySelectorAll('.close, .modal').forEach(element => {
+            element.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal') || e.target.classList.contains('close')) {
+                    document.getElementById('notesModal').style.display = 'none';
+                }
+            });
+        });
+
+        // Save notes logic
+        document.getElementById('saveNotes').addEventListener('click', () => {
+            const notes = document.getElementById('editNotes').value;
+            // Here you would typically send to server
+            document.getElementById('notesModal').style.display = 'none';
+        });
+
+        // Reschedule Functionality
+        let currentAppointmentCard = null;
+
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            if (button.textContent.includes('Reschedule')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentAppointmentCard = e.target.closest('.appointment-card');
+                    document.getElementById('rescheduleModal').style.display = 'block';
+                });
+            }
+        });
+
+        // Confirm Reschedule
+        document.getElementById('confirmReschedule').addEventListener('click', () => {
+            if (currentAppointmentCard) {
+                const newTime = document.getElementById('newTimeSlot').value;
+                currentAppointmentCard.querySelector('.time-slot').innerHTML = `
+            <i class="far fa-clock"></i>
+            ${newTime}
+        `;
+                closeRescheduleModal();
+            }
+        });
+
+        // Close Modal Functions
+        function closeRescheduleModal() {
+            document.getElementById('rescheduleModal').style.display = 'none';
+            currentAppointmentCard = null;
+        }
+
+        document.querySelectorAll('#rescheduleModal .close, #cancelReschedule').forEach(element => {
+            element.addEventListener('click', closeRescheduleModal);
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const rescheduleModal = document.getElementById('rescheduleModal');
+            if (event.target === rescheduleModal) {
+                closeRescheduleModal();
+            }
+        };
+
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const appointmentCard = e.target.closest('.appointment-card');
+                appointmentCard.remove();
+            });
+        });
+
+        // Check-In Functionality (updated)
+        document.querySelectorAll('.checkin-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const appointmentCard = e.target.closest('.appointment-card');
+                const statusBadge = appointmentCard.querySelector('.status-badge');
+                const actionButtons = appointmentCard.querySelector('.action-buttons');
+
+                // Update to completed style
+                statusBadge.classList.remove('upcoming');
+                statusBadge.classList.add('completed');
+                statusBadge.textContent = 'Completed';
+
+                // Update action buttons to match completed state
+                actionButtons.innerHTML = `
+            <a href="#" class="btn btn-outline">
+                <i class="far fa-file-alt"></i>
+                View Notes
+            </a>
+            <a href="#" class="btn btn-primary">
+                <i class="far fa-calendar-alt"></i>
+                Reschedule
+            </a>
+        `;
+
+                // Re-attach event listeners
+                attachNotesListener(actionButtons.querySelector('.btn-outline'));
+                attachRescheduleListener(actionButtons.querySelector('.btn-primary'));
+            });
+        });
     </script>
 </body>
 

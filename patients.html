@@ -373,6 +373,115 @@
             margin-right: 6px;
         }
 
+        .details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* Changed from 1fr 1fr to three columns */
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .modal-section {
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            min-height: 200px;
+            /* Added for better spacing */
+        }
+
+        .modal-section h3 {
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .modal-section h3 i {
+            margin-right: 8px;
+        }
+
+        .modal-section ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .modal-section li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .modal-section p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .modal-header {
+            padding: 15px;
+            border-bottom: 1px solid #e0e7f1;
+        }
+
+        .modal-patient-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .modal-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #3498db;
+        }
+
+        .modal-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-patient-text h2 {
+            margin-bottom: 5px;
+            color: #1f2937;
+        }
+
+        .modal-patient-text p {
+            color: #666;
+            font-size: 14px;
+        }
+
         /* Responsive Styles */
         @media (max-width: 1200px) {
             .content {
@@ -404,6 +513,11 @@
 
             .patient-name {
                 font-size: 15px;
+            }
+
+            .modal-body {
+                grid-template-columns: repeat(2, 1fr);
+                /* Two columns on medium screens */
             }
         }
 
@@ -451,6 +565,11 @@
 
             .btn {
                 width: 100%;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+                /* Single column on mobile */
             }
         }
 
@@ -537,6 +656,8 @@
             .patient-name {
                 font-size: 15px;
             }
+
+
         }
     </style>
 
@@ -711,6 +832,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Add this at the end of your content div -->
+        <div class="details-modal" id="details-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="modal-header">
+
+
+                    <div class="modal-patient-info">
+                        <div class="modal-avatar">
+                            <img id="modal-patient-img" src="images/doctor-1.png" alt="Patient Avatar">
+                        </div>
+                        <div class="modal-patient-text">
+                            <h2 id="modal-patient-name">Jennifer Adams</h2>
+                            <p id="modal-patient-age"></p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-body">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
         <script>
             // Toggle sidebar functionality
             document.getElementById('menu-toggle').addEventListener('click', function () {
@@ -778,6 +923,83 @@
 
             // Add event listener
             searchInput.addEventListener('input', searchAppointments);
+
+            // Update your script section
+            document.querySelectorAll('.btn-primary').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const modal = document.getElementById('details-modal');
+                    const modalBody = modal.querySelector('.modal-body');
+
+                    // Sample data - replace with actual patient data
+                    modalBody.innerHTML = `
+      <div class="modal-section">
+        <h3><i class="fas fa-info-circle"></i> Basic Info</h3>
+        <p>Full Name: Jennifer Adams</p>
+        <p>Date of Birth: 1986-05-15 (39 years)</p>
+        <p>Gender: Female</p>
+        <p>Blood Type: O+</p>
+      </div>
+      
+      <div class="modal-section">
+        <h3><i class="fas fa-history"></i> Medical History</h3>
+        <p>Allergies: Penicillin, Pollen</p>
+        <p>Chronic Conditions: Hypertension</p>
+        <p>Previous Surgeries: Appendectomy (2010)</p>
+      </div>
+      
+      <div class="modal-section">
+        <h3><i class="fas fa-prescription-bottle"></i> Medications</h3>
+        <p>Current: Lisinopril 10mg daily</p>
+        <p>Recent: Amoxicillin (completed 2025-03-20)</p>
+      </div>
+      
+      <div class="modal-section">
+        <h3><i class="fas fa-heartbeat"></i> Vital Signs</h3>
+        <p>Last Recorded (2025-04-03):</p>
+        <p>BP: 120/80 mmHg | HR: 72 bpm</p>
+        <p>Weight: 68 kg | Height: 165 cm</p>
+      </div>
+      
+      <div class="modal-section">
+        <h3><i class="fas fa-calendar-alt"></i> Appointments</h3>
+        <p>Next Appointment: 2025-05-05 (Follow-up)</p>
+        <p>Last 3 Visits:
+          <ul>
+            <li>2025-04-03 - Routine Checkup</li>
+            <li>2025-02-15 - Blood Pressure Follow-up</li>
+            <li>2024-12-10 - Annual Physical</li>
+          </ul>
+        </p>
+      </div>
+      
+      <div class="modal-section">
+        <h3><i class="fas fa-stethoscope"></i> Treatment Plan</h3>
+        <p>Current Plan:</p>
+        <ul>
+          <li>Monthly BP checks</li>
+          <li>Low-sodium diet</li>
+          <li>30-min daily exercise</li>
+        </ul>
+      </div>
+    `;
+
+                    modal.style.display = 'block';
+                });
+            });
+
+            // Close modal functionality
+            document.querySelector('.close-btn').addEventListener('click', () => {
+                document.getElementById('details-modal').style.display = 'none';
+            });
+
+            window.onclick = (event) => {
+                const modal = document.getElementById('details-modal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+
         </script>
 </body>
 
